@@ -1,0 +1,12 @@
+---
+- name: Configure nginx web server
+  hosts: ec2
+  tasks:
+  - name: install nginx server #uninstall
+    yum:
+      name: nginx #nginx=1.18.0-0ubuntu1
+      state: latest #present || absent
+  - name: start nginx server
+    service:
+      name: nginx
+      state: started #stopped
