@@ -1,6 +1,6 @@
 ---
 - name: Install node and npm
-  hosts: 13.233.63.48
+  hosts: 3.109.153.140
   become: true
   tasks:
   - name: Update package index
@@ -14,7 +14,7 @@
       state: present
 
 - name: Create new Linux user for node app
-  hosts: 13.233.63.48
+  hosts: 3.109.153.140
   become: True
   tasks:
     - name: Create linux user
@@ -24,25 +24,27 @@
         group: admin
 
 - name: Deploy nodejs app
-  hosts: 13.233.63.48
+  hosts: 3.109.153.140
   become: True
   become_user: jason 
+  vars_files:
+    - project_vars.yaml
   tasks:
   - name: copy
     copy: 
-      src: /home/jason/Documents/practice/boto3/main.py
-      dest: /home/jason/main.py
+      src: "{{location}}"
+      dest: "{{link}}/main.py"
   - name: Install dependencies
     npm:
-      path: /home/jason/package
+      path: "{{link}}/package"
   - name: Start the app
     command:
-      chdir: /home/jason
+      chdir: "{{link}}"
       cmd: node --version
     async: 1000
     poll: 0
   - name: Ensure app is running
     shell: ps aux | grep node
     register: app_status
-  - debug: msg={{app_status}} 
+  - debug: msg={{app_status.stdout_lines}} 
 
