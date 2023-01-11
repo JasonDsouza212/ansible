@@ -59,7 +59,7 @@
     - name: Docker login
       docker_login:
         registry_url: https://index.docker.io/v1/
-        username: "{{docker_password}}"
+        username: "{{docker_password }}"
         password: new-dockerdeploy
     - name: Start container from compose
       docker_compose:
