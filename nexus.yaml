@@ -95,7 +95,7 @@
     - name: wait one min
       pause:
         minutes: 1
-    - name: Check with netstat
+    - name: Check with netstat 
       shell: netstat -plnt
       register: netstat_status
     - debug: msg={{netstat_status}}
