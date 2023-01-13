@@ -1,0 +1,61 @@
+---
+- name: Install python3 and docker  
+  hosts: all
+  become: true
+  gather_facts: False
+  tasks:
+    - name: Install python
+      vars:
+        ansible_python_interpreter: /usr/bin/python
+      yum:
+        name: 
+          - python3
+          - docker
+          - pip
+        update_cache: yes
+        state: present
+
+- name: Install docker-comose
+  hosts: all
+  become: true
+  tasks:
+    - name: Install Docker-Compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-linux-{{lookup('pipe','uname -m')}}
+        dest: /usr/local/bin/docker-compose.yaml
+        mode: +x
+        
+- name: Start docker
+  hosts: all
+  become: true
+  tasks:
+    - name: Start docker daemon
+      systemd:
+        name: docker
+        state: started
+    
+- name: Add ec2-user to docker group
+  hosts: all
+  become: true
+  roles:
+    - create_user
+
+- name: Start docker container
+  hosts: all
+  vars_prompt:
+    - name: docker_password
+      prompt: Enter password for docker registry
+  roles:
+    - start_containers
+    
+ 
+
+# - name: Test docker pull
+#   hosts: all
+#   tasks:
+#     - name: pull redis
+#       docker_image:
+#         name: redis
+#         source: pull
+
+ 
