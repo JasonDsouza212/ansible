@@ -64,7 +64,7 @@
     - name: Start container from compose
       docker_compose:
         project_src: /home/ec2-user
-        state: present #resent means up or absent means down
+        state: present #present means up or absent means down
 
  
 
@@ -76,6 +76,6 @@
 #         name: redis
 #         source: pull
 
-# Its integrated with Terraform so We can start this with terrafoem to
+# Its integrated with Terraform so We can start this with terraform to
 
  
